@@ -1,48 +1,81 @@
-
- def begins_with_r(r)
-    r.all? do |string| 
-    string[0] == "r"
+def organize_schools(schools)
+  organized_schools = {}
+  schools.each do |name, location_hash|
+    location = location_hash[:location]
+    if organized_schools[location]
+      organized_schools[location] << name
+    else
+      organized_schools[location] = []
+      organized_schools[location] << name
+    end
   end
+  organized_schools
 end
 
-def contain_a(r)
-  r.select do |string|
-    string.include?("a")
-  end 
-end 
+def begins_with_r(array)
+  flag = true
+  array.each do |element|
+    flag = false if element[0] != "r"
+  end
+  flag
+end
 
-def first_wa(r)
-  r.detect do |string|
-    string[0,2] == "wa"
-    
-  end 
-end 
+def contain_a(array)
+  container = []
+  array.each do |element|
+    container << element if element.include?("a")
+  end
+  container
+end
 
-def remove_non_strings(r)
-  r.delete_if do |string|
-  string.is_a?(String) == false
-end 
-end 
+def remove_non_strings(array)
+  container = []
+  array.each do |element|
+    container << element if element.is_a?(String)
+  end
+  container
+end
+
+def first_wa(array)
+  first_wa = nil
+  array.each do |element|
+    if element.match(/wa/)
+      first_wa = element
+      break
+    end
+  end
+  first_wa
+end
+
+def find_cool(array)
+  container = []
+  array.each do |element|
+    container << element if element[:temperature] == "cool"
+  end
+  container
+end
 
 def count_elements(array)
-array.uniq.each {|i| count = 0
-        array.each {|i2| if i2 == i then count += 1 end}
-        i[:count] = count}
+  array.each do |original_hash|
+    original_hash[:count] = 0
+    name = original_hash[:name]
+    array.each do |hash|
+      if hash[:name] == name
+        original_hash[:count] += 1
+      end
+    end
+  end.uniq
 end
 
-def merge_data(keys, data)
-  merged = []
-  keys.each {|i| data.first.map {|k,v| if i.values[0] == k then merged << i.merge(v) end}}
-  merged
-end
-
- def find_cool(cool)
-    cool.select {|i| i.any? {|k,v| v == "cool"}} 
-end
-
- def organize_schools(schools)
-    locations_hash = {}
-    schools.collect {|k,v| locations_hash[v[:location]] = []}
-    locations_hash.each {|k,v| schools.each {|k1,v1| if k == v1[:location] then v << k1  end}}
+def merge_data(arr1, arr2)
+  arr2[0].map do |name, prop_hash|
+    new_prop_hash = {}
+    arr1.each do |new_attr_hash|
+      if new_attr_hash[:first_name] == name
+        new_prop_hash = prop_hash.merge(new_attr_hash)
+      end
+    end
+    new_prop_hash
+  end
 end
 
